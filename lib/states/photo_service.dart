@@ -28,7 +28,7 @@ class _PhotoServiceState extends State<PhotoService> {
   List<File?> files = [];
   File? file;
 
-  var listImages = [false,false,false,false];
+  var listImages = [false, false, false, false];
 
   Future<Null> processScan() async {
     try {
@@ -43,7 +43,8 @@ class _PhotoServiceState extends State<PhotoService> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    textEditingController.text = '2109039PTG9VAT';
+    // textEditingController.text = '2109039PTG9VAT';
+    textEditingController.text = '211216A228XAFJ';
 
     for (var i = 0; i < 4; i++) {
       files.add(null);
@@ -128,10 +129,10 @@ class _PhotoServiceState extends State<PhotoService> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          buildImage(0),
-          buildImage(1),
-          buildImage(2),
-          buildImage(3),
+          buildImage(0, shopeeDocnoModels[0].PACKIMG1),
+          buildImage(1, shopeeDocnoModels[0].PACKIMG2),
+          buildImage(2, shopeeDocnoModels[0].PACKIMG3),
+          buildImage(3, shopeeDocnoModels[0].PACKIMG4),
         ],
       ),
     );
@@ -174,14 +175,12 @@ class _PhotoServiceState extends State<PhotoService> {
                       color: Colors.white.withOpacity(0.5),
                       child: IconButton(
                         onPressed: () async {
-
                           MyDialog().processDialog(context);
 
                           String nameFile =
                               '${textEditingController.text}_${index + 1}.jpg';
 
                           try {
-
                             Map<String, dynamic> map = {};
                             map['file'] = await MultipartFile.fromFile(
                                 files[index]!.path,
@@ -193,11 +192,32 @@ class _PhotoServiceState extends State<PhotoService> {
                             await Dio().post(urlAPi, data: data).then((value) {
                               print('@@ value ==> $value');
                               Navigator.pop(context);
+
+                              // process UPdate Database
+                              var key = [
+                                'PACKIMG1',
+                                'PACKIMG2',
+                                'PACKIMG3',
+                                'PACKIMG4'
+                              ];
+
+                              var picnum = <int>[
+                                1,
+                                2,
+                                3,
+                                4,
+                              ];
+
+                              Map<String, dynamic> map = {};
+                              map[key[index]] = value.toString();
+                              print('@@ picnum ===> ${picnum[index]} map ====> $map');
                             });
                           } catch (e) {
                             print('@@ error =>$e');
                             Navigator.pop(context);
-                            MyDialog().normalDialog(context, title: 'Have Problem', message: 'Wait few minus Please again');
+                            MyDialog().normalDialog(context,
+                                title: 'Have Problem',
+                                message: 'Wait few minus Please again');
                           }
                         },
                         icon: Icon(
@@ -239,7 +259,8 @@ class _PhotoServiceState extends State<PhotoService> {
     );
   }
 
-  Container buildImage(int index) {
+  Container buildImage(int index, String packimg) {
+    print('@@ image$index ====> $packimg');
     return Container(
       width: 48,
       height: 48,
