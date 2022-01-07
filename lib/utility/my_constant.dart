@@ -8,6 +8,7 @@ class MyConstant {
   static String image1 = 'images/image1.png';
   static String image2 = 'images/image2.png';
   static String icon = 'images/icon.png';
+  static String domainImage = 'http://210.86.171.110:89/shopeepic/';
 
   // for Color
   static Color primary = Color(0xff616161);
