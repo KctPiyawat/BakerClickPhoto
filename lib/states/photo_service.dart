@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:bakerclickphoto/models/shopee_docno_model.dart';
 import 'package:bakerclickphoto/utility/my_constant.dart';
 import 'package:bakerclickphoto/utility/my_dialog.dart';
+import 'package:bakerclickphoto/widgets/button_take_photo.dart';
 import 'package:bakerclickphoto/widgets/show_image.dart';
 import 'package:bakerclickphoto/widgets/show_title.dart';
 import 'package:dio/dio.dart';
@@ -120,7 +121,9 @@ class _PhotoServiceState extends State<PhotoService> {
           // buildHeadTitle('รายการสั่งซื้อ'),
           buildListOrder(),
           buildHeadTitle('รูปถ่าย Package'),
-          controlImage(),
+          // controlImage(), นี้คือตัวเก่าที่ต้อง Alert Dialot ก่อนอัพไป server
+          newControlImage(),
+
           buildRow(
               'น้ำหนักสินค้า : ',
               shopeeDocnoModels.length == 0
@@ -130,6 +133,12 @@ class _PhotoServiceState extends State<PhotoService> {
       ),
     );
   }
+
+  Widget newControlImage() => Row(
+    children: [
+      ButtonTakePhoto(tapFunc: () {  },),
+    ],
+  );
 
   Padding controlImage() {
     return Padding(
