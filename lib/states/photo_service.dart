@@ -135,10 +135,30 @@ class _PhotoServiceState extends State<PhotoService> {
   }
 
   Widget newControlImage() => Row(
-    children: [
-      ButtonTakePhoto(tapFunc: () {  },),
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ButtonTakePhoto(
+            tapFunc: () {
+              print('You Click1');
+            }, urlPathImage: shopeeDocnoModels[0].PACKIMG1,
+          ),
+          ButtonTakePhoto(
+            tapFunc: () {
+              print('You Click2');
+            }, urlPathImage: shopeeDocnoModels[0].PACKIMG2,
+          ),
+          ButtonTakePhoto(
+            tapFunc: () {
+              print('You Click3');
+            }, urlPathImage: shopeeDocnoModels[0].PACKIMG3,
+          ),
+          ButtonTakePhoto(
+            tapFunc: () {
+              print('You Click4');
+            }, urlPathImage: shopeeDocnoModels[0].PACKIMG4,
+          ),
+        ],
+      );
 
   Padding controlImage() {
     return Padding(
@@ -193,9 +213,9 @@ class _PhotoServiceState extends State<PhotoService> {
                     child: Card(
                       color: Colors.white.withOpacity(0.5),
                       child: IconButton(
-                        onPressed: (){
+                        onPressed: () {
                           processUploadImge(index);
-                        },  // end Func
+                        }, // end Func
                         icon: Icon(
                           Icons.cloud_upload_outlined,
                           size: 36,
@@ -236,68 +256,54 @@ class _PhotoServiceState extends State<PhotoService> {
   }
 
   Future<void> processUploadImge(int index) async {
-                          MyDialog().processDialog(context);
+    MyDialog().processDialog(context);
 
-                          String nameFile =
-                              '${textEditingController.text}_${index + 1}.jpg';
+    String nameFile = '${textEditingController.text}_${index + 1}.jpg';
 
-                          try {
-                            Map<String, dynamic> map = {};
-                            map['file'] = await MultipartFile.fromFile(
-                                files[index]!.path,
-                                filename: nameFile);
-                            FormData data = FormData.fromMap(map);
+    try {
+      Map<String, dynamic> map = {};
+      map['file'] =
+          await MultipartFile.fromFile(files[index]!.path, filename: nameFile);
+      FormData data = FormData.fromMap(map);
 
-                            String urlAPi =
-                                'http://210.86.171.110:89/webapi3/api/docfile';
-                            await Dio()
-                                .post(urlAPi, data: data)
-                                .then((value) async {
-                              print('@@ value ==> $value');
-                              Navigator.pop(context);
+      String urlAPi = 'http://210.86.171.110:89/webapi3/api/docfile';
+      await Dio().post(urlAPi, data: data).then((value) async {
+        print('@@ value ==> $value');
+        Navigator.pop(context);
 
-                              // process UPdate Database
-                              var key = [
-                                'PACKIMG1',
-                                'PACKIMG2',
-                                'PACKIMG3',
-                                'PACKIMG4'
-                              ];
+        // process UPdate Database
+        var key = ['PACKIMG1', 'PACKIMG2', 'PACKIMG3', 'PACKIMG4'];
 
-                              var picnums = <int>[
-                                1,
-                                2,
-                                3,
-                                4,
-                              ];
+        var picnums = <int>[
+          1,
+          2,
+          3,
+          4,
+        ];
 
-                              Map<String, dynamic> map = {};
-                              map[key[index]] = value.toString();
-                              print(
-                                  '@@ picnum ===> ${picnums[index]} map ====> $map');
+        Map<String, dynamic> map = {};
+        map[key[index]] = value.toString();
+        print('@@ picnum ===> ${picnums[index]} map ====> $map');
 
-                              String docno = textEditingController.text;
-                              int picnum = picnums[index];
-                              String picname = nameFile;
+        String docno = textEditingController.text;
+        int picnum = picnums[index];
+        String picname = nameFile;
 
-                              String apiUpdateImgePackage =
-                                  'http://210.86.171.110:89/webapi3/api/shopeepic?docno=$docno&picnum=$picnum&picname=$picname';
+        String apiUpdateImgePackage =
+            'http://210.86.171.110:89/webapi3/api/shopeepic?docno=$docno&picnum=$picnum&picname=$picname';
 
-                              await Dio()
-                                  .get(apiUpdateImgePackage)
-                                  .then((value) {
-                                print('@@ Success Update Image $picnum');
-                                processSearch(docno);
-                              });
-                            });
-                          } catch (e) {
-                            print('@@ error =>$e');
-                            Navigator.pop(context);
-                            MyDialog().normalDialog(context,
-                                title: 'Have Problem',
-                                message: 'Wait few minus Please again');
-                          }
-                        }
+        await Dio().get(apiUpdateImgePackage).then((value) {
+          print('@@ Success Update Image $picnum');
+          processSearch(docno);
+        });
+      });
+    } catch (e) {
+      print('@@ error =>$e');
+      Navigator.pop(context);
+      MyDialog().normalDialog(context,
+          title: 'Have Problem', message: 'Wait few minus Please again');
+    }
+  }
 
   Container buildImage(int index, String packimg) {
     print('@@ image$index ====> $packimg');
