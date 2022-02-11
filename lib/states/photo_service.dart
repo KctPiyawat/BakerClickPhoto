@@ -174,14 +174,18 @@ class _PhotoServiceState extends State<PhotoService> {
 
   Future<Null> processTakePhoto(ImageSource source, int index) async {
     try {
+
+      print('Form Imge index ===> $index');
+
       var result = await ImagePicker().pickImage(
         source: source,
         maxHeight: 800,
         maxWidth: 800,
       );
-      setState(() {
-        files[index] = File(result!.path);
-      });
+
+      File file = File(result!.path);
+      
+      processUploadImge(index,file);
     } catch (e) {}
   }
 
@@ -207,14 +211,14 @@ class _PhotoServiceState extends State<PhotoService> {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  // processTakePhoto(ImageSource.camera, index);
+                  processTakePhoto(ImageSource.camera, index);
                 },
                 child: Text('ถ่ายรูป'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  // processTakePhoto(ImageSource.gallery, index);
+                  processTakePhoto(ImageSource.gallery, index);
                 },
                 child: Text('รูปในเครื่อง'),
               ),
@@ -229,7 +233,7 @@ class _PhotoServiceState extends State<PhotoService> {
     );
   }
 
-  Future<void> processUploadImge(int index) async {
+  Future<void> processUploadImge(int index, File file) async {
     MyDialog().processDialog(context);
 
     String nameFile = '${textEditingController.text}_${index + 1}.jpg';
@@ -237,7 +241,7 @@ class _PhotoServiceState extends State<PhotoService> {
     try {
       Map<String, dynamic> map = {};
       map['file'] =
-          await MultipartFile.fromFile(files[index]!.path, filename: nameFile);
+          await MultipartFile.fromFile(file.path, filename: nameFile);
       FormData data = FormData.fromMap(map);
 
       String urlAPi = 'http://210.86.171.110:89/webapi3/api/docfile';
@@ -268,7 +272,9 @@ class _PhotoServiceState extends State<PhotoService> {
 
         await Dio().get(apiUpdateImgePackage).then((value) {
           print('@@ Success Update Image $picnum');
-          processSearch(docno);
+          setState(() {
+            processSearch(docno);
+          });
         });
       });
     } catch (e) {
