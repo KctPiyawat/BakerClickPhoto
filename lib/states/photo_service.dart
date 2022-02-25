@@ -32,7 +32,6 @@ class _PhotoServiceState extends State<PhotoService> {
 
   var listImages = [false, false, false, false];
 
-  
   Future<Null> processScan() async {
     try {
       var result = await scan();
@@ -48,18 +47,6 @@ class _PhotoServiceState extends State<PhotoService> {
     super.initState();
     // textEditingController.text = '105109TRN8CH5';
     textEditingController.text = '2105109TRN8CH5';
-
-    setUpFiles();
-  }
-
-  void setUpFiles() {
-    if (files.isNotEmpty) {
-      files.clear();
-    }
-
-    for (var i = 0; i < 4; i++) {
-      files.add(null);
-    }
   }
 
   @override
@@ -87,6 +74,8 @@ class _PhotoServiceState extends State<PhotoService> {
 
   AppBar buildAppName() {
     return AppBar(
+      backgroundColor: MyConstant.primary,
+      title: Text(MyConstant.appName),
       actions: [
         IconButton(
           onPressed: () => checkCamera(),
@@ -142,39 +131,40 @@ class _PhotoServiceState extends State<PhotoService> {
           ButtonTakePhoto(
             tapFunc: () {
               print('You Click1');
-              imageDialog(0, '${textEditingController.text}_1',shopeeDocnoModels[0].PACKIMG1);
+              imageDialog(0, '${textEditingController.text}_1',
+                  shopeeDocnoModels[0].PACKIMG1);
             },
             urlPathImage: shopeeDocnoModels[0].PACKIMG1,
           ),
           ButtonTakePhoto(
             tapFunc: () {
               print('You Click2');
-              imageDialog(1, '${textEditingController.text}_2',shopeeDocnoModels[0].PACKIMG2);
+              imageDialog(1, '${textEditingController.text}_2',
+                  shopeeDocnoModels[0].PACKIMG2);
             },
             urlPathImage: shopeeDocnoModels[0].PACKIMG2,
           ),
           ButtonTakePhoto(
             tapFunc: () {
               print('You Click3');
-              imageDialog(2, '${textEditingController.text}_3',shopeeDocnoModels[0].PACKIMG3);
+              imageDialog(2, '${textEditingController.text}_3',
+                  shopeeDocnoModels[0].PACKIMG3);
             },
             urlPathImage: shopeeDocnoModels[0].PACKIMG3,
           ),
           ButtonTakePhoto(
             tapFunc: () {
               print('You Click4');
-              imageDialog(3, '${textEditingController.text}_4',shopeeDocnoModels[0].PACKIMG4);
+              imageDialog(3, '${textEditingController.text}_4',
+                  shopeeDocnoModels[0].PACKIMG4);
             },
             urlPathImage: shopeeDocnoModels[0].PACKIMG4,
           ),
         ],
       );
 
-  
-
   Future<Null> processTakePhoto(ImageSource source, int index) async {
     try {
-
       print('Form Imge index ===> $index');
 
       var result = await ImagePicker().pickImage(
@@ -184,12 +174,13 @@ class _PhotoServiceState extends State<PhotoService> {
       );
 
       File file = File(result!.path);
-      
-      processUploadImge(index,file);
+
+      processUploadImge(index, file);
     } catch (e) {}
   }
 
-  Future<Null> imageDialog(int index, String packimg, String currentPackimg) async {
+  Future<Null> imageDialog(
+      int index, String packimg, String currentPackimg) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -202,7 +193,7 @@ class _PhotoServiceState extends State<PhotoService> {
           subtitle: ShowTitle(title: 'กรุณา เลือกแหล่งกำเหนิดภาพ ด้วยคะ'),
         ),
         content: AlertContent(
-         currentPackimg: currentPackimg,
+          currentPackimg: currentPackimg,
         ),
         actions: [
           Row(
@@ -240,8 +231,7 @@ class _PhotoServiceState extends State<PhotoService> {
 
     try {
       Map<String, dynamic> map = {};
-      map['file'] =
-          await MultipartFile.fromFile(file.path, filename: nameFile);
+      map['file'] = await MultipartFile.fromFile(file.path, filename: nameFile);
       FormData data = FormData.fromMap(map);
 
       String urlAPi = 'http://210.86.171.110:89/webapi3/api/docfile';
@@ -284,7 +274,6 @@ class _PhotoServiceState extends State<PhotoService> {
           title: 'Have Problem', message: 'Wait few minus Please again');
     }
   }
-
 
   Widget buildListOrder() {
     return SingleChildScrollView(
@@ -342,8 +331,6 @@ class _PhotoServiceState extends State<PhotoService> {
   }
 
   Future<Null> processSearch(String search) async {
-    setUpFiles();
-
     if (shopeeDocnoModels.length != 0) {
       shopeeDocnoModels.clear();
       displayDetailCustomer = false;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MyConstant {
+
+  static String appName = 'Check Packge Picture';
   // for Route
   static String routePhotoService = '/photoService';
 
@@ -11,9 +13,9 @@ class MyConstant {
   static String domainImage = 'http://210.86.171.110:89/shopeepic/';
 
   // for Color
-  static Color primary = Color(0xff616161);
+  static Color primary = Color(0xfff57c00);
   static Color dark = Color(0xffbb4d00);
-  static Color light = Color(0xff8e8e8e);
+  static Color light = Color(0xffffad42);
 
   // for Style
   TextStyle h1Style() => TextStyle(
