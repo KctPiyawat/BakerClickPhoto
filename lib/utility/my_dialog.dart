@@ -14,6 +14,7 @@ class MyDialog {
             path: MyConstant.image1,
           ),
           title: ShowTitle(title: title),
+          subtitle: ShowTitle(title: message),
         ),
       ),
     );
