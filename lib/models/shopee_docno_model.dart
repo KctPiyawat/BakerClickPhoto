@@ -1,3 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 class ShopeeDocnoModel {
@@ -29,6 +32,8 @@ class ShopeeDocnoModel {
   final String PACKIMG2;
   final String PACKIMG3;
   final String PACKIMG4;
+  final String WEIGHTREAL;
+  final String DOCFLAG;
   ShopeeDocnoModel({
     required this.NO,
     required this.DOCNO,
@@ -58,11 +63,13 @@ class ShopeeDocnoModel {
     required this.PACKIMG2,
     required this.PACKIMG3,
     required this.PACKIMG4,
+    required this.WEIGHTREAL,
+    required this.DOCFLAG,
   });
 
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'NO': NO,
       'DOCNO': DOCNO,
       'DOCDATE': DOCDATE,
@@ -91,45 +98,54 @@ class ShopeeDocnoModel {
       'PACKIMG2': PACKIMG2,
       'PACKIMG3': PACKIMG3,
       'PACKIMG4': PACKIMG4,
+      'WEIGHTREAL': WEIGHTREAL,
+      'DOCFLAG': DOCFLAG,
     };
   }
 
   factory ShopeeDocnoModel.fromMap(Map<String, dynamic> map) {
     return ShopeeDocnoModel(
-      NO: map['NO'] ?? '',
-      DOCNO: map['DOCNO'] ?? '',
-      DOCDATE: map['DOCDATE'] ?? '',
-      CUSNAME: map['CUSNAME'] ?? '',
-      CUSADDRESS: map['CUSADDRESS'] ?? '',
-      DELIVERYVALUE: map['DELIVERYVALUE'] ?? '',
-      PRODUCTCODE: map['PRODUCTCODE'] ?? '',
-      BARCODE: map['BARCODE'] ?? '',
-      PRODUCTNAME: map['PRODUCTNAME'] ?? '',
-      UNITPRICE: map['UNITPRICE'] ?? '',
-      QTY: map['QTY'] ?? '',
-      UNITNAME: map['UNITNAME'] ?? '',
-      NETAMOUNT: map['NETAMOUNT'] ?? '',
-      SUMAMOUNT1: map['SUMAMOUNT1'] ?? '',
-      FEEVALUE: map['FEEVALUE'] ?? '',
-      DEBTAMOUNT: map['DEBTAMOUNT'] ?? '',
-      WEIGHTALL: map['WEIGHTALL'] ?? '',
-      PIC1: map['PIC1'] ?? '',
-      REMARK: map['REMARK'] ?? '',
-      CUSTREMARK: map['CUSTREMARK'] ?? '',
-      STOCKBAL: map['STOCKBAL'] ?? '',
-      PHONE: map['PHONE'] ?? '',
-      CUSTSHOPEECODE: map['CUSTSHOPEECODE'] ?? '',
-      WEIGHTTOT: map['WEIGHTTOT'] ?? '',
-      PACKIMG1: map['PACKIMG1'] ?? '',
-      PACKIMG2: map['PACKIMG2'] ?? '',
-      PACKIMG3: map['PACKIMG3'] ?? '',
-      PACKIMG4: map['PACKIMG4'] ?? '',
+      NO: map['NO'] as String,
+      DOCNO: map['DOCNO'] as String,
+      DOCDATE: map['DOCDATE'] as String,
+      CUSNAME: map['CUSNAME'] as String,
+      CUSADDRESS: map['CUSADDRESS'] as String,
+      DELIVERYVALUE: map['DELIVERYVALUE'] as String,
+      PRODUCTCODE: map['PRODUCTCODE'] as String,
+      BARCODE: map['BARCODE'] as String,
+      PRODUCTNAME: map['PRODUCTNAME'] as String,
+      UNITPRICE: map['UNITPRICE'] as String,
+      QTY: map['QTY'] as String,
+      UNITNAME: map['UNITNAME'] as String,
+      NETAMOUNT: map['NETAMOUNT'] as String,
+      SUMAMOUNT1: map['SUMAMOUNT1'] as String,
+      FEEVALUE: map['FEEVALUE'] as String,
+      DEBTAMOUNT: map['DEBTAMOUNT'] as String,
+      WEIGHTALL: map['WEIGHTALL'] as String,
+      PIC1: map['PIC1'] as String,
+      REMARK: map['REMARK'] as String,
+      CUSTREMARK: map['CUSTREMARK'] as String,
+      STOCKBAL: map['STOCKBAL'] as String,
+      PHONE: map['PHONE'] as String,
+      CUSTSHOPEECODE: map['CUSTSHOPEECODE'] as String,
+      WEIGHTTOT: map['WEIGHTTOT'] as String,
+      PACKIMG1: map['PACKIMG1'] as String,
+      PACKIMG2: map['PACKIMG2'] as String,
+      PACKIMG3: map['PACKIMG3'] as String,
+      PACKIMG4: map['PACKIMG4'] as String,
+      WEIGHTREAL: map['WEIGHTREAL'] as String,
+      DOCFLAG: map['DOCFLAG'] as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ShopeeDocnoModel.fromJson(String source) => ShopeeDocnoModel.fromMap(json.decode(source));
+  factory ShopeeDocnoModel.fromJson(String source) => ShopeeDocnoModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'ShopeeDocnoModel(NO: $NO, DOCNO: $DOCNO, DOCDATE: $DOCDATE, CUSNAME: $CUSNAME, CUSADDRESS: $CUSADDRESS, DELIVERYVALUE: $DELIVERYVALUE, PRODUCTCODE: $PRODUCTCODE, BARCODE: $BARCODE, PRODUCTNAME: $PRODUCTNAME, UNITPRICE: $UNITPRICE, QTY: $QTY, UNITNAME: $UNITNAME, NETAMOUNT: $NETAMOUNT, SUMAMOUNT1: $SUMAMOUNT1, FEEVALUE: $FEEVALUE, DEBTAMOUNT: $DEBTAMOUNT, WEIGHTALL: $WEIGHTALL, PIC1: $PIC1, REMARK: $REMARK, CUSTREMARK: $CUSTREMARK, STOCKBAL: $STOCKBAL, PHONE: $PHONE, CUSTSHOPEECODE: $CUSTSHOPEECODE, WEIGHTTOT: $WEIGHTTOT, PACKIMG1: $PACKIMG1, PACKIMG2: $PACKIMG2, PACKIMG3: $PACKIMG3, PACKIMG4: $PACKIMG4, WEIGHTREAL: $WEIGHTREAL, DOCFLAG: $DOCFLAG)';
+  }
 }
 
 

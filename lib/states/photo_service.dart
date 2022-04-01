@@ -92,6 +92,9 @@ class _PhotoServiceState extends State<PhotoService> {
       width: constraints.maxWidth * 0.9,
       child: Column(
         children: [
+          buildHeadTitle('รายละเอียดลูกค้า'),
+          buildRow('Date', cutWorddate(shopeeDocnoModel!.DOCDATE)),
+
           buildRow('รหัสลูกค้า : ',
               shopeeDocnoModel == null ? '' : shopeeDocnoModel!.CUSTSHOPEECODE),
           buildRow('เลขที่สั่งซื้อ : ',
@@ -104,19 +107,26 @@ class _PhotoServiceState extends State<PhotoService> {
               shopeeDocnoModel == null ? '' : shopeeDocnoModel!.PHONE),
           // buildHeadTitle('รายการสั่งซื้อ'),
           buildListOrder(),
-          buildHeadTitle('รูปถ่าย Package'),
-          // controlImage(), นี้คือตัวเก่าที่ต้อง Alert Dialot ก่อนอัพไป server
-          newControlImage(),
+          buildListPhoto(),
 
+          buildHeadTitle('น้ำหนัก : '),
           buildRow(
-              'น้ำหนักสินค้า : ',
-              shopeeDocnoModel == null
-                  ? ''
-                  : '  ${shopeeDocnoModel!.WEIGHTTOT} kg'),
+              'น้ำหนักสินค้าสินค้ารวม : ', '${shopeeDocnoModel!.WEIGHTTOT} kg',
+              spFlex: 2),
+          buildRow(
+              'น้ำหนักสินค้ารวมแพ็ค : ', '${shopeeDocnoModel!.WEIGHTREAL} kg',
+              spFlex: 2),
         ],
       ),
     );
   }
+
+  ExpansionTile buildListPhoto() => ExpansionTile(
+        title: buildHeadTitle('รูปถ่าย Package : '),
+        children: [
+          newControlImage(),
+        ],
+      );
 
   Widget newControlImage() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -269,14 +279,9 @@ class _PhotoServiceState extends State<PhotoService> {
   }
 
   Widget buildListOrder() {
-    return SingleChildScrollView(
-      child: ExpansionTile(
-        title: ShowTitle(
-          title: 'รายการสั่งซื้อ',
-          textStyle: MyConstant().h2BuleStyle(),
-        ),
-        children: widgets,
-      ),
+    return ExpansionTile(
+      title: buildHeadTitle('รายการสั่งซื้อ : '),
+      children: widgets,
     );
   }
 
@@ -295,11 +300,12 @@ class _PhotoServiceState extends State<PhotoService> {
     );
   }
 
-  Row buildRow(String head, String value) {
+  Row buildRow(String head, String value, {int? spFlex}) {
     return Row(
       children: [
         Expanded(
-          flex: 1,
+          // flex: spFelx == null ? 1 : spFlex,
+          flex: spFlex ?? 1,
           child: ShowTitle(title: head),
         ),
         Expanded(
@@ -451,5 +457,10 @@ class _PhotoServiceState extends State<PhotoService> {
         ],
       ),
     );
+  }
+
+  String cutWorddate(String docdate) {
+    var strings = docdate.split(' ');
+    return strings[0];
   }
 }
