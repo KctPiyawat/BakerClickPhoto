@@ -112,10 +112,32 @@ class _PhotoServiceState extends State<PhotoService> {
           buildHeadTitle('น้ำหนัก : '),
           buildRow(
               'น้ำหนักสินค้าสินค้ารวม : ', '${shopeeDocnoModel!.WEIGHTTOT} kg',
-              spFlex: 2),
+              spFlex: 3),
           buildRow(
-              'น้ำหนักสินค้ารวมแพ็ค : ', '${shopeeDocnoModel!.WEIGHTREAL} kg',
-              spFlex: 2),
+            'น้ำหนักสินค้ารวมแพ็ค : ',
+            '${shopeeDocnoModel!.WEIGHTREAL} kg',
+            spFlex: 3,
+            pressBol: true,
+            pressFunc: () {
+              int docFlagInt = int.parse(shopeeDocnoModel!.DOCFLAG.trim());
+              switch (docFlagInt) {
+                case 0:
+                  print('process Edit Weight');
+                  break;
+                case 1:
+                  MyDialog().normalDialog(context,
+                      title: 'ไม่สามารถแก้ไขได้ ?',
+                      message: 'เอกสารอ้างอิง ทำใบขายแล้ว');
+                  break;
+                case 2:
+                  MyDialog().normalDialog(context,
+                      title: 'ไม่สามารถแก้ไขได้ ?',
+                      message: 'เอกสารยกเลิกแล้ว');
+                  break;
+                default:
+              }
+            },
+          ),
         ],
       ),
     );
@@ -300,7 +322,9 @@ class _PhotoServiceState extends State<PhotoService> {
     );
   }
 
-  Row buildRow(String head, String value, {int? spFlex}) {
+  Row buildRow(String head, String value,
+      {int? spFlex, bool? pressBol, Function()? pressFunc}) {
+    bool status = pressBol ?? false;
     return Row(
       children: [
         Expanded(
@@ -309,9 +333,21 @@ class _PhotoServiceState extends State<PhotoService> {
           child: ShowTitle(title: head),
         ),
         Expanded(
-          flex: 3,
+          flex: status ? 2 : 3,
           child: ShowTitle(title: value),
         ),
+        status
+            ? Expanded(
+                flex: 1,
+                child: IconButton(
+                  onPressed: pressFunc,
+                  icon: Icon(
+                    Icons.edit_outlined,
+                    color: MyConstant.dark,
+                  ),
+                ),
+              )
+            : SizedBox(),
       ],
     );
   }
