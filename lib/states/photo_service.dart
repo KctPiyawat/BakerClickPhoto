@@ -32,6 +32,8 @@ class _PhotoServiceState extends State<PhotoService> {
 
   var listImages = [false, false, false, false];
 
+  String? totalWeigh;
+
   ShopeeDocnoModel? shopeeDocnoModel;
 
   Future<Null> processScan() async {
@@ -48,7 +50,7 @@ class _PhotoServiceState extends State<PhotoService> {
     // TODO: implement initState
     super.initState();
     // textEditingController.text = '105109TRN8CH5';
-    textEditingController.text = '2105109TRN8CH5';
+    textEditingController.text = '2204228SBUBJWP';
   }
 
   @override
@@ -123,6 +125,7 @@ class _PhotoServiceState extends State<PhotoService> {
               switch (docFlagInt) {
                 case 0:
                   print('process Edit Weight');
+                  processEditWeight(currentWeight: shopeeDocnoModel!.WEIGHTREAL);
                   break;
                 case 1:
                   MyDialog().normalDialog(context,
@@ -498,5 +501,52 @@ class _PhotoServiceState extends State<PhotoService> {
   String cutWorddate(String docdate) {
     var strings = docdate.split(' ');
     return strings[0];
+  }
+
+  Future<void> processEditWeight({required String currentWeight}) async {
+
+    TextEditingController controller = TextEditingController();
+    controller.text = currentWeight;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: ListTile(
+          leading: ShowImage(path: 'images/image2.png'),
+          title: ShowTitle(
+            title: 'น้ำหนักรวมแพ็ค',
+            textStyle: MyConstant().h2BuleStyle(),
+          ),
+          subtitle: ShowTitle(title: 'กรุณาใส่น้ำหนักเป็นหน่วย กิโลกรัม'),
+        ),
+        content: TextFormField(controller: controller,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            label: ShowTitle(title: 'น้ำหนักรวมแพ็ค'),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyConstant.dark, width: 2),
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light)),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: ShowTitle(
+              title: 'Save',
+              textStyle: MyConstant().h3mornalButtonStyle(),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: ShowTitle(
+              title: 'Cancel',
+              textStyle: MyConstant().h3mornalButtonStyle(),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
