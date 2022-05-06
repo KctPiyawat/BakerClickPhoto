@@ -32,7 +32,7 @@ class _PhotoServiceState extends State<PhotoService> {
 
   var listImages = [false, false, false, false];
 
-  String? totalWeigh;
+  String? totalWeight;
 
   ShopeeDocnoModel? shopeeDocnoModel;
 
@@ -50,7 +50,7 @@ class _PhotoServiceState extends State<PhotoService> {
     // TODO: implement initState
     super.initState();
     // textEditingController.text = '105109TRN8CH5';
-    textEditingController.text = '2204228SBUBJWP';
+    textEditingController.text = '220505CNYRP2GQ';
   }
 
   @override
@@ -125,7 +125,8 @@ class _PhotoServiceState extends State<PhotoService> {
               switch (docFlagInt) {
                 case 0:
                   print('process Edit Weight');
-                  processEditWeight(currentWeight: shopeeDocnoModel!.WEIGHTREAL);
+                  processEditWeight(
+                      currentWeight: shopeeDocnoModel!.WEIGHTREAL);
                   break;
                 case 1:
                   MyDialog().normalDialog(context,
@@ -504,49 +505,73 @@ class _PhotoServiceState extends State<PhotoService> {
   }
 
   Future<void> processEditWeight({required String currentWeight}) async {
-
     TextEditingController controller = TextEditingController();
-    controller.text = currentWeight;
+    if (currentWeight != '0.00') {
+      controller.text = currentWeight;
+    }
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: ListTile(
-          leading: ShowImage(path: 'images/image2.png'),
-          title: ShowTitle(
-            title: 'น้ำหนักรวมแพ็ค',
-            textStyle: MyConstant().h2BuleStyle(),
-          ),
-          subtitle: ShowTitle(title: 'กรุณาใส่น้ำหนักเป็นหน่วย กิโลกรัม'),
+    weightDialog(controller, currentWeight);
+  }
+
+  Future<dynamic> weightDialog(TextEditingController controller, String currentWeight) {
+    return showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: ListTile(
+        leading: ShowImage(path: 'images/image2.png'),
+        title: ShowTitle(
+          title: 'น้ำหนักรวมแพ็ค',
+          textStyle: MyConstant().h2BuleStyle(),
         ),
-        content: TextFormField(controller: controller,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            label: ShowTitle(title: 'น้ำหนักรวมแพ็ค'),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: MyConstant.dark, width: 2),
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: MyConstant.light)),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: ShowTitle(
-              title: 'Save',
-              textStyle: MyConstant().h3mornalButtonStyle(),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: ShowTitle(
-              title: 'Cancel',
-              textStyle: MyConstant().h3mornalButtonStyle(),
-            ),
-          ),
-        ],
+        subtitle: ShowTitle(title: 'กรุณาใส่น้ำหนักเป็นหน่วย กิโลกรัม'),
       ),
-    );
+      content: TextFormField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          label: ShowTitle(title: 'น้ำหนักรวมแพ็ค'),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: MyConstant.dark, width: 2),
+          ),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyConstant.light)),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+
+            totalWeight = controller.text;
+
+            if (totalWeight?.isEmpty ?? true) {
+              MyDialog().normalDialog(
+                context,
+                title: 'ยังไม่ได้กรอกน้ำหนัก',
+                message: 'กรุณากรอกน้ำหนัก',
+                label: 'กรอกน้ำหนัก',
+                pressFunc: () {
+                  Navigator.pop(context);
+                  processEditWeight(currentWeight: currentWeight);
+
+                },
+              );
+            }
+          },
+          child: ShowTitle(
+            title: 'Save',
+            textStyle: MyConstant().h3mornalButtonStyle(),
+          ),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: ShowTitle(
+            title: 'Cancel',
+            textStyle: MyConstant().h3mornalButtonStyle(),
+          ),
+        ),
+      ],
+    ),
+  );
   }
 }

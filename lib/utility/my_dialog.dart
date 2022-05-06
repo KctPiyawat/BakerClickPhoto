@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 
 class MyDialog {
   Future<Null> normalDialog(BuildContext context,
-      {required String title, required String message}) async {
+      {required String title,
+      required String message,
+      String? label,
+      Function()? pressFunc}) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -16,6 +19,14 @@ class MyDialog {
           title: ShowTitle(title: title),
           subtitle: ShowTitle(title: message),
         ),
+        actions: [
+          TextButton(
+              onPressed: pressFunc ??
+                  () {
+                    Navigator.pop(context);
+                  },
+              child: ShowTitle(title: label ?? 'OK'))
+        ],
       ),
     );
   }
