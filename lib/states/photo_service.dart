@@ -9,6 +9,7 @@ import 'package:bakerclickphoto/widgets/show_title.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart';
 
@@ -50,7 +51,7 @@ class _PhotoServiceState extends State<PhotoService> {
     // TODO: implement initState
     super.initState();
     // textEditingController.text = '105109TRN8CH5';
-    textEditingController.text = '220505CNYRP2GQ';
+    textEditingController.text = '2205121BPPF768';
   }
 
   @override
@@ -544,19 +545,7 @@ class _PhotoServiceState extends State<PhotoService> {
 
             totalWeight = controller.text;
 
-            if (totalWeight?.isEmpty ?? true) {
-              MyDialog().normalDialog(
-                context,
-                title: 'ยังไม่ได้กรอกน้ำหนัก',
-                message: 'กรุณากรอกน้ำหนัก',
-                label: 'กรอกน้ำหนัก',
-                pressFunc: () {
-                  Navigator.pop(context);
-                  processEditWeight(currentWeight: currentWeight);
-
-                },
-              );
-            }
+            newAlertHaveSpace(context, currentWeight); // if
           },
           child: ShowTitle(
             title: 'Save',
@@ -573,5 +562,24 @@ class _PhotoServiceState extends State<PhotoService> {
       ],
     ),
   );
+  }
+
+  Future<void> newAlertHaveSpace(BuildContext context, String currentWeight) async {
+    if (totalWeight?.isEmpty ?? true) {
+      MyDialog().normalDialog(
+        context,
+        title: 'ยังไม่ได้กรอกน้ำหนัก',
+        message: 'กรุณากรอกน้ำหนัก',
+        label: 'กรอกน้ำหนัก',
+        
+      );
+    } else{
+
+      print('totalWeight ดิ =====> $totalWeight');
+
+      double totalDou = double.parse(totalWeight!);
+      NumberFormat numberFormat = NumberFormat('##.00');
+      
+    }
   }
 }
