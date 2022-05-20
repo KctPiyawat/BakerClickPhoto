@@ -51,7 +51,7 @@ class _PhotoServiceState extends State<PhotoService> {
     // TODO: implement initState
     super.initState();
     // textEditingController.text = '105109TRN8CH5';
-    textEditingController.text = '2205121BPPF768';
+    // textEditingController.text = '220519KBVJQRUR'
   }
 
   @override
@@ -122,7 +122,10 @@ class _PhotoServiceState extends State<PhotoService> {
             spFlex: 3,
             pressBol: true,
             pressFunc: () {
-              int docFlagInt = int.parse(shopeeDocnoModel!.DOCFLAG.trim());
+              int docFlagInt = 0;
+             if (shopeeDocnoModel!.DOCFLAG.isNotEmpty) {
+  docFlagInt = int.parse(shopeeDocnoModel!.DOCFLAG.trim());
+}
               switch (docFlagInt) {
                 case 0:
                   print('process Edit Weight');
@@ -514,72 +517,78 @@ class _PhotoServiceState extends State<PhotoService> {
     weightDialog(controller, currentWeight);
   }
 
-  Future<dynamic> weightDialog(TextEditingController controller, String currentWeight) {
+  Future<dynamic> weightDialog(
+      TextEditingController controller, String currentWeight) {
     return showDialog(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      title: ListTile(
-        leading: ShowImage(path: 'images/image2.png'),
-        title: ShowTitle(
-          title: 'น้ำหนักรวมแพ็ค',
-          textStyle: MyConstant().h2BuleStyle(),
-        ),
-        subtitle: ShowTitle(title: 'กรุณาใส่น้ำหนักเป็นหน่วย กิโลกรัม'),
-      ),
-      content: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          label: ShowTitle(title: 'น้ำหนักรวมแพ็ค'),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: MyConstant.dark, width: 2),
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: ListTile(
+          leading: ShowImage(path: 'images/image2.png'),
+          title: ShowTitle(
+            title: 'น้ำหนักรวมแพ็ค',
+            textStyle: MyConstant().h2BuleStyle(),
           ),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: MyConstant.light)),
+          subtitle: ShowTitle(title: 'กรุณาใส่น้ำหนักเป็นหน่วย กิโลกรัม'),
         ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
+        content: TextFormField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            label: ShowTitle(title: 'น้ำหนักรวมแพ็ค'),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyConstant.dark, width: 2),
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light)),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
 
-            totalWeight = controller.text;
+              totalWeight = controller.text;
 
-            newAlertHaveSpace(context, currentWeight); // if
-          },
-          child: ShowTitle(
-            title: 'Save',
-            textStyle: MyConstant().h3mornalButtonStyle(),
+              newAlertHaveSpace(context, currentWeight); // if
+            },
+            child: ShowTitle(
+              title: 'Save',
+              textStyle: MyConstant().h3mornalButtonStyle(),
+            ),
           ),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: ShowTitle(
-            title: 'Cancel',
-            textStyle: MyConstant().h3mornalButtonStyle(),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: ShowTitle(
+              title: 'Cancel',
+              textStyle: MyConstant().h3mornalButtonStyle(),
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
   }
 
-  Future<void> newAlertHaveSpace(BuildContext context, String currentWeight) async {
+  Future<void> newAlertHaveSpace(
+      BuildContext context, String currentWeight) async {
     if (totalWeight?.isEmpty ?? true) {
       MyDialog().normalDialog(
         context,
         title: 'ยังไม่ได้กรอกน้ำหนัก',
         message: 'กรุณากรอกน้ำหนัก',
         label: 'กรอกน้ำหนัก',
-        
       );
-    } else{
-
+    } else {
       print('totalWeight ดิ =====> $totalWeight');
 
       double totalDou = double.parse(totalWeight!);
       NumberFormat numberFormat = NumberFormat('##.00');
-      
+
+      String urlAPi =
+          'http://210.86.171.110:89/webapi3/api/shopeesavepack?docno=${shopeeDocnoModel!.DOCNO}&packweight=$totalWeight';
+
+      await Dio().get(urlAPi).then((value) {
+        processSearch(textEditingController.text);
+      });
     }
   }
 }
