@@ -50,8 +50,8 @@ class _PhotoServiceState extends State<PhotoService> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // textEditingController.text = '105109TRN8CH5';
-    // textEditingController.text = '220519KBVJQRUR'
+    // textEditingController.text = 'SPXTH027542031685';
+    // textEditingController.text = '2205278EJ1UVN6';
   }
 
   @override
@@ -577,18 +577,34 @@ class _PhotoServiceState extends State<PhotoService> {
         message: 'กรุณากรอกน้ำหนัก',
         label: 'กรอกน้ำหนัก',
       );
+    } else if (checkTotalWeight()){
+        processSaveNewWeight();
     } else {
-      print('totalWeight ดิ =====> $totalWeight');
-
-      double totalDou = double.parse(totalWeight!);
-      NumberFormat numberFormat = NumberFormat('##.00');
-
-      String urlAPi =
-          'http://210.86.171.110:89/webapi3/api/shopeesavepack?docno=${shopeeDocnoModel!.DOCNO}&packweight=$totalWeight';
-
-      await Dio().get(urlAPi).then((value) {
-        processSearch(textEditingController.text);
-      });
+      MyDialog().normalDialog(context, title: 'มีข้อผิดพลาด', message: 'น้ำหนักรวมแพค น้อยกว่า น้ำหนักรวมสินค้า');
     }
+  }
+
+  bool checkTotalWeight(){
+    bool result = true; // ค่าของรวมแพ็คที่กรอกมากกว่าน้ำหนักสินค้ารวม
+
+    double totalDou = double.parse(totalWeight!);
+    double weightTotal = double.parse(shopeeDocnoModel!.WEIGHTTOT);
+    if (totalDou <= weightTotal){
+      result = false;
+    }
+
+    return result;
+  }
+
+  Future<void> processSaveNewWeight() async {
+    double totalDou = double.parse(totalWeight!);
+    NumberFormat numberFormat = NumberFormat('##.00');
+    
+    String urlAPi =
+        'http://210.86.171.110:89/webapi3/api/shopeesavepack?docno=${shopeeDocnoModel!.DOCNO}&packweight=$totalWeight';
+    
+    await Dio().get(urlAPi).then((value) {
+      processSearch(textEditingController.text);
+    });
   }
 }
